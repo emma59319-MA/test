@@ -3,201 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>民法 1094 條：家族傳承專業導航</title>
+    <title>民法 1094 條：家族傳承數位導航</title>
     <style>
         :root {
-            --bg-color: #fdfaf5;
-            --text-color: #2c3e50;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
             --accent-color: #b03a2e;
-            --secondary-color: #1a5276;
-            --font-size-base: 18pt; /* 高齡友善大字體 */
+            --secondary-color: #2e86c1;
+            --font-size-base: 18pt; /* 手機閱讀最舒適的大字 */
         }
 
         body {
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.8;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding-bottom: 80px; /* 為底部按鈕留空間 */
         }
 
-        /* 目錄導覽列 */
-        .nav-menu {
-            width: 100%;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        /* 頂部手機標題欄 */
+        .mobile-header {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
-            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .mobile-header h1 {
+            font-size: 20pt;
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        /* 快速切換目錄 (手機橫向滑動) */
+        .nav-scroll {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            background: #fff;
+            padding: 10px;
             gap: 10px;
+            border-bottom: 1px solid #ddd;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .nav-menu button {
-            font-size: 14pt;
+        .nav-scroll button {
+            white-space: nowrap;
             padding: 8px 15px;
-            background: none;
+            font-size: 14pt;
+            border-radius: 20px;
             border: 1px solid var(--secondary-color);
+            background: white;
             color: var(--secondary-color);
-            border-radius: 5px;
-            cursor: pointer;
         }
 
-        .nav-menu button.active {
+        .nav-scroll button.active {
             background: var(--secondary-color);
             color: white;
         }
 
-        .main-card {
-            background: #ffffff;
-            max-width: 850px;
-            width: 90%;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 40px;
-            margin: 30px 0;
-            min-height: 600px;
-        }
-
-        h1 { font-size: 30pt; color: var(--accent-color); text-align: center; margin-bottom: 30px; }
-        h2 { font-size: 26pt; border-left: 10px solid var(--accent-color); padding-left: 15px; margin: 25px 0; }
-        h3 { font-size: 22pt; color: var(--secondary-color); }
-        
-        p, li { font-size: var(--font-size-base); margin-bottom: 20px; }
-        .highlight { color: var(--accent-color); font-weight: bold; background: #fff3f3; padding: 0 5px; }
-
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.4s ease-in; }
-
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-            gap: 20px;
-        }
-
-        .action-btn {
+        /* 內容卡片容器 */
+        .container {
             padding: 20px;
-            font-size: 20pt;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 12px;
-            border: none;
-            flex: 1;
+            max-width: 100%;
         }
 
-        .btn-next { background-color: var(--accent-color); color: white; }
-        .btn-prev { background-color: #ecf0f1; color: #7f8c8d; }
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            min-height: 350px;
+            display: none;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .content-card.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        h2 { font-size: 22pt; color: var(--accent-color); border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h3 { font-size: 19pt; color: var(--secondary-color); margin-top: 25px; }
+        p, li { font-size: var(--font-size-base); line-height: 1.6; margin-bottom: 15px; }
+
+        .highlight { font-weight: bold; color: #d35400; background: #fff5e6; }
+
+        /* 底部固定導覽鈕 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            padding: 15px;
+            box-sizing: border-box;
+            gap: 10px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+
+        .bottom-nav button {
+            flex: 1;
+            padding: 15px;
+            font-size: 18pt;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .btn-prev { background: #e0e0e0; color: #666; }
+        .btn-next { background: var(--accent-color); color: white; }
 
         .quote-box {
-            background: #f8f9fa;
-            border-left: 8px solid #ddd;
-            padding: 25px;
-            font-style: italic;
-            margin: 25px 0;
-            font-size: 1.1em;
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16pt;
+            border-left: 6px solid #ccc;
+            margin: 20px 0;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
 
-<div class="nav-menu">
-    <button onclick="goToStep(1)" id="nav1" class="active">前言</button>
-    <button onclick="goToStep(2)" id="nav2">1.監護順序</button>
-    <button onclick="goToStep(3)" id="nav3">2.修法重點</button>
-    <button onclick="goToStep(4)" id="nav4">3.實務啟示</button>
-    <button onclick="goToStep(5)" id="nav5">4.法律提醒</button>
+<div class="mobile-header">
+    <h1>民法 1094 條導航</h1>
 </div>
 
-<div class="main-card">
-    <h1>民法第 1094 條 專業解讀</h1>
+<div class="nav-scroll" id="menu">
+    <button onclick="goTo(1)" id="m1" class="active">前言</button>
+    <button onclick="goTo(2)" id="m2">1.監護順序</button>
+    <button onclick="goTo(3)" id="m3">2.修法重點</button>
+    <button onclick="goTo(4)" id="m4">3.實務啟示</button>
+    <button onclick="goTo(5)" id="m5">4.法律提醒</button>
+</div>
 
-    <div id="sec-1" class="content-section active">
-        <h2>前言：家族傳承的極端風險</h2>
+<div class="container">
+    <div id="card1" class="content-card active">
+        <h2>前言：家族傳承風險</h2>
         <p>這是一條關於「愛與責任」的條款。</p>
-        <p>當父母因意外或疾病均不存時，我們最愛的未成年子女，法律將如何決定他們的監護人？</p>
-        <p><span class="highlight">「孩子誰來管？錢誰來理？」</span> 這是每位家長都必須預演的劇本。</p>
+        <p>當父母因意外或疾病均不存時，法律將如何決定未成年子女的監護人？</p>
+        <p class="highlight">「孩子誰來管？錢誰來理？」</p>
     </div>
 
-    <div id="sec-2" class="content-section">
+    <div id="card2" class="content-card">
         <h2>一、 監護人產生順序</h2>
-        <p>當父母均不能行使權利義務時，監護人決定順序：</p>
-        <ol>
-            <li><span class="highlight">父母遺囑指定：</span> <strong>法律最高優先權</strong>。由父母生前以遺囑指定的人選。</li>
-            <li><strong>法院指定：</strong> 若無遺囑，由法院依「最佳利益」選定親屬：
-                <ul>
-                    <li>同居之祖父母</li>
-                    <li>與子女同居之兄姊</li>
-                    <li>不具同居關係之祖父母</li>
-                </ul>
-            </li>
-        </ol>
+        <p>1. <span class="highlight">父母遺囑指定：</span> 具備法律最高優先權。</p>
+        <p>2. <strong>法院指定：</strong>若無遺囑，由法院依「最佳利益」選定親屬：</p>
+        <ul>
+            <li>同居之祖父母</li>
+            <li>與子女同居之兄姊</li>
+            <li>不具同居關係之祖父母</li>
+        </ul>
     </div>
 
-    <div id="sec-3" class="content-section">
-        <h2>二、 2009 年修法重點</h2>
-        <p>這項修法對主管及高資產族群極為重要：</p>
-        <p>過去採「自動順位」，曾發生疏遠親屬為了理賠金爭奪監護權的悲劇。</p>
-        <p><span class="highlight">現行法規定：</span> 法院必須參考<strong>「社工人員訪視報告」</strong>，選出真正對孩子最好的人，不再讓順位決定一切。</p>
+    <div id="card3" class="content-card">
+        <h2>二、 2009 修法重點</h2>
+        <p>早期採「自動順位制」，易引發爭產悲劇。</p>
+        <p><span class="highlight">現行法規定：</span> 法院必須參考<strong>「社工人員訪視報告」</strong>，選出真正對孩子最好的人。</p>
     </div>
 
-    <div id="sec-4" class="content-section">
-        <h2>三、 保險與傳承三啟示</h2>
-        <h3>1. 指定監護人的必要性</h3>
-        <p>建議在做資產規劃時，同步完成遺囑，確保控制權在信任的人手中。</p>
-        <h3>2. 保險金信託的重要性</h3>
-        <p>錢跟人要分開。監護人管人，信託管錢，防止保險金被挪用。</p>
-        <h3>3. 單親或失能風險</h3>
-        <p>不僅是死亡，父母其中一方長期失能也可能觸發監護議題，規劃失能險時務必留意。</p>
+    <div id="card4" class="content-card">
+        <h2>三、 保險與傳承啟示</h2>
+        <h3>1. 指定監護人</h3>
+        <p>規劃資產時同步完成遺囑，掌握主控權。</p>
+        <h3>2. 保險金信託</h3>
+        <p>監護人管人，信託管錢，防止保險金被挪用。</p>
+        <h3>3. 失能風險</h3>
+        <p>失能也可能觸發監護議題，規劃時務必納入考量。</p>
     </div>
 
-    <div id="sec-5" class="content-section">
-        <h2>四、 法律小提醒</h2>
+    <div id="card5" class="content-card">
+        <h2>四、 法律提醒</h2>
         <div class="quote-box">
-            「法院選定監護人時，應依未成年子女之<strong>最佳利益</strong>，審酌一切情狀……並應參考社工人員之訪視報告。」<br>
-            <small>——《民法》第 1094 條第 4 項</small>
+            「應依未成年子女之最佳利益，審酌一切情狀……並應參考社工人員之訪視報告。」<br>
+            <small>——民法 1094 條第 4 項</small>
         </div>
-        <p><strong>王經理總結：</strong><br>法律是冰冷的，但安排是溫暖的。運用遺囑指定，是送給孩子最後的護身符。</p>
+        <p><strong>王經理總結：</strong><br>遺囑指定是送給孩子最後、也最專業的護身符。</p>
     </div>
+</div>
 
-    <div class="btn-container">
-        <button id="prevBtn" class="action-btn btn-prev" onclick="changeStep(-1)" style="visibility: hidden;">上一步</button>
-        <button id="nextBtn" class="action-btn btn-next" onclick="changeStep(1)">了解下一步</button>
-    </div>
+<div class="bottom-nav">
+    <button class="btn-prev" onclick="move(-1)" id="prevBtn" style="display:none;">回上一步</button>
+    <button class="btn-next" onclick="move(1)" id="nextBtn">下一個重點</button>
 </div>
 
 <script>
-    let currentStep = 1;
-    const totalSteps = 5;
+    let current = 1;
+    const total = 5;
 
-    function goToStep(n) {
-        document.getElementById(`sec-${currentStep}`).classList.remove('active');
-        document.getElementById(`nav${currentStep}`).classList.remove('active');
-        currentStep = n;
-        document.getElementById(`sec-${currentStep}`).classList.add('active');
-        document.getElementById(`nav${currentStep}`).classList.add('active');
-        updateButtons();
+    function goTo(n) {
+        document.getElementById(`card${current}`).classList.remove('active');
+        document.getElementById(`m${current}`).classList.remove('active');
+        current = n;
+        document.getElementById(`card${current}`).classList.add('active');
+        document.getElementById(`m${current}`).classList.add('active');
+        
+        // 自動滾動選單
+        const menu = document.getElementById('menu');
+        const activeBtn = document.getElementById(`m${current}`);
+        menu.scrollTo({ left: activeBtn.offsetLeft - 50, behavior: 'smooth' });
+
+        updateUI();
     }
 
-    function changeStep(n) {
-        if (currentStep + n > totalSteps) {
-            location.reload(); // 重新開始
-            return;
-        }
-        goToStep(currentStep + n);
+    function move(n) {
+        if (current + n > total) { goTo(1); return; }
+        goTo(current + n);
     }
 
-    function updateButtons() {
-        document.getElementById('prevBtn').style.visibility = (currentStep === 1) ? 'hidden' : 'visible';
-        document.getElementById('nextBtn').innerText = (currentStep === totalSteps) ? '重新開始' : '下一個重點';
+    function updateUI() {
+        document.getElementById('prevBtn').style.display = (current === 1) ? 'none' : 'block';
+        document.getElementById('nextBtn').innerText = (current === total) ? '重新讀起' : '下一個重點';
     }
 </script>
 
