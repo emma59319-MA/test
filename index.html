@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>民法 1094 條：未成年監護人決策導航</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #c0392b;
+            --bg-color: #f4f7f6;
+        }
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        .question {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #34495e;
+            transform: translateY(-2px);
+        }
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-left: 5px solid var(--accent-color);
+            background: #fff5f5;
+            display: none;
+        }
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        .footer-note {
+            font-size: 0.85rem;
+            margin-top: 20px;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>民法第 1094 條 互動導航</h2>
+    <p>當父母均不能行使監護權時，孩子由誰照顧？</p>
+    
+    <div id="step1">
+        <div class="question">Q1：父母生前是否留有「指定監護人」的遺囑？</div>
+        <div class="btn-group">
+            <button onclick="showResult('will')">是有遺囑</button>
+            <button onclick="showResult('no-will')">否，未留遺囑</button>
+        </div>
+    </div>
+
+    <div id="result">
+        <div id="result-text"></div>
+        <div class="footer-note">
+            <strong>王經理專業提醒：</strong><br>
+            法律順位只是基礎，為了確保保險理賠金不被挪用，強烈建議搭配「保險金信託」與「遺囑公證」。
+        </div>
+        <button style="margin-top:20px; background:#95a5a6;" onclick="reset()">重新檢測</button>
+    </div>
+</div>
+
+<script>
+    function showResult(type) {
+        document.getElementById('step1').style.display = 'none';
+        const resultDiv = document.getElementById('result');
+        const textDiv = document.getElementById('result-text');
+        resultDiv.style.display = 'block';
+
+        if (type === 'will') {
+            textDiv.innerHTML = `
+                <h3><span class="highlight">第一順位：遺囑指定</span></h3>
+                <p>根據民法 1094 條第 1 項，父母以<strong>遺囑指定</strong>之人選具有法律最高優先權。</p>
+                <p>這能最有效避免家族紛爭，確保孩子由您信任的人照顧。</p>
+            `;
+        } else {
+            textDiv.innerHTML = `
+                <h3><span class="highlight">進入法院選定程序</span></h3>
+                <p>若無遺囑，法院將依<strong>「子女最佳利益」</strong>選定監護人，參考順序如下：</p>
+                <ul>
+                    <li>與未成年人同居之祖父母</li>
+                    <li>與未成年人同居之兄姊</li>
+                    <li>不具同居關係之祖父母</li>
+                </ul>
+                <p><small>*注意：法院會參考社工訪視報告，並非絕對依順位自動產生。</small></p>
+            `;
+        }
+    }
+
+    function reset() {
+        document.getElementById('step1').style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
