@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>民法 1094 條：家族傳承與監護風險導航</title>
+    <title>民法 1094 條：家族傳承專業導航</title>
     <style>
         :root {
-            --bg-color: #fdfaf5; /* 溫暖米色，保護視力 */
+            --bg-color: #fdfaf5;
             --text-color: #2c3e50;
-            --accent-color: #b03a2e; /* 深紅色，適合重點標註 */
-            --box-bg: #ffffff;
-            --font-size-base: 18pt; /* 基礎文字18pt，高齡友善 */
+            --accent-color: #b03a2e;
+            --secondary-color: #1a5276;
+            --font-size-base: 18pt; /* 高齡友善大字體 */
         }
 
         body {
@@ -20,132 +20,157 @@
             line-height: 1.8;
             margin: 0;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 目錄導覽列 */
+        .nav-menu {
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 10px 0;
+            display: flex;
             justify-content: center;
-            padding: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-menu button {
+            font-size: 14pt;
+            padding: 8px 15px;
+            background: none;
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .nav-menu button.active {
+            background: var(--secondary-color);
+            color: white;
         }
 
         .main-card {
-            background: var(--box-bg);
+            background: #ffffff;
             max-width: 850px;
-            width: 100%;
+            width: 90%;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             padding: 40px;
-            min-height: 500px;
-            position: relative;
+            margin: 30px 0;
+            min-height: 600px;
         }
 
-        /* 標題樣式 */
-        h1 { font-size: 28pt; color: var(--accent-color); text-align: center; margin-bottom: 30px; }
-        h2 { font-size: 24pt; border-left: 8px solid var(--accent-color); padding-left: 15px; margin-top: 20px; }
-        h3 { font-size: 20pt; color: #1a5276; }
-
-        /* 文字內容樣式 */
-        p, li { font-size: var(--font-size-base); margin-bottom: 15px; }
-        .highlight { color: var(--accent-color); font-weight: bold; text-decoration: underline; }
+        h1 { font-size: 30pt; color: var(--accent-color); text-align: center; margin-bottom: 30px; }
+        h2 { font-size: 26pt; border-left: 10px solid var(--accent-color); padding-left: 15px; margin: 25px 0; }
+        h3 { font-size: 22pt; color: var(--secondary-color); }
         
-        .quote-box {
-            background: #f4f4f4;
-            border-radius: 10px;
-            padding: 20px;
-            font-style: italic;
-            border-left: 5px solid #ccc;
-            margin: 20px 0;
-        }
+        p, li { font-size: var(--font-size-base); margin-bottom: 20px; }
+        .highlight { color: var(--accent-color); font-weight: bold; background: #fff3f3; padding: 0 5px; }
 
-        /* 互動分步控制 */
         .content-section { display: none; }
         .content-section.active { display: block; animation: fadeIn 0.4s ease-in; }
 
-        /* 按鈕設計：加大、清晰 */
         .btn-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 40px;
+            margin-top: 50px;
             gap: 20px;
         }
 
-        button {
-            padding: 15px 35px;
+        .action-btn {
+            padding: 20px;
             font-size: 20pt;
             font-weight: bold;
             cursor: pointer;
             border-radius: 12px;
             border: none;
-            transition: 0.2s;
             flex: 1;
         }
 
         .btn-next { background-color: var(--accent-color); color: white; }
         .btn-prev { background-color: #ecf0f1; color: #7f8c8d; }
-        button:hover { opacity: 0.9; transform: scale(1.02); }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 列表優化 */
-        ul { padding-left: 30px; }
-        li { margin-bottom: 15px; }
+        .quote-box {
+            background: #f8f9fa;
+            border-left: 8px solid #ddd;
+            padding: 25px;
+            font-style: italic;
+            margin: 25px 0;
+            font-size: 1.1em;
+        }
     </style>
 </head>
 <body>
 
+<div class="nav-menu">
+    <button onclick="goToStep(1)" id="nav1" class="active">前言</button>
+    <button onclick="goToStep(2)" id="nav2">1.監護順序</button>
+    <button onclick="goToStep(3)" id="nav3">2.修法重點</button>
+    <button onclick="goToStep(4)" id="nav4">3.實務啟示</button>
+    <button onclick="goToStep(5)" id="nav5">4.法律提醒</button>
+</div>
+
 <div class="main-card">
-    <div class="header">
-        <h1>民法第 1094 條 導覽</h1>
-    </div>
+    <h1>民法第 1094 條 專業解讀</h1>
 
     <div id="sec-1" class="content-section active">
-        <h2>前言：愛的風險管理</h2>
-        <p>當父母雙亡或皆無法行使監護權時：<br>
-           <span class="highlight">「孩子誰來管？錢誰來理？」</span></p>
-        <p>這涉及家族傳承中最極端的風險狀況。讓我們透過以下導覽，了解如何運用法律守護下一代。</p>
+        <h2>前言：家族傳承的極端風險</h2>
+        <p>這是一條關於「愛與責任」的條款。</p>
+        <p>當父母因意外或疾病均不存時，我們最愛的未成年子女，法律將如何決定他們的監護人？</p>
+        <p><span class="highlight">「孩子誰來管？錢誰來理？」</span> 這是每位家長都必須預演的劇本。</p>
     </div>
 
     <div id="sec-2" class="content-section">
         <h2>一、 監護人產生順序</h2>
-        <p>依現行條文，順序如下：</p>
+        <p>當父母均不能行使權利義務時，監護人決定順序：</p>
         <ol>
-            <li><span class="highlight">父母遺囑指定：</span> 最優先！父母生前以遺囑指定的人選。</li>
-            <li><strong>法院指定（無遺囑時）：</strong> 依「子女最佳利益」選定親屬：
+            <li><span class="highlight">父母遺囑指定：</span> <strong>法律最高優先權</strong>。由父母生前以遺囑指定的人選。</li>
+            <li><strong>法院指定：</strong> 若無遺囑，由法院依「最佳利益」選定親屬：
                 <ul>
-                    <li>同居之祖父母。</li>
-                    <li>與未成年人同居之兄姊。</li>
-                    <li>不具同居關係之祖父母。</li>
+                    <li>同居之祖父母</li>
+                    <li>與子女同居之兄姊</li>
+                    <li>不具同居關係之祖父母</li>
                 </ul>
             </li>
         </ol>
     </div>
 
     <div id="sec-3" class="content-section">
-        <h2>二、 2009 年重要修法</h2>
-        <p><strong>主管級必知：</strong> 早期法律採「自動順位制」，易導致不適任親屬覬覦保險金。</p>
-        <p><span class="highlight">現行法規：</span> 若無遺囑，法院會參考「社工調查報告」，選出最適合的人，不再是自動遞補。</p>
+        <h2>二、 2009 年修法重點</h2>
+        <p>這項修法對主管及高資產族群極為重要：</p>
+        <p>過去採「自動順位」，曾發生疏遠親屬為了理賠金爭奪監護權的悲劇。</p>
+        <p><span class="highlight">現行法規定：</span> 法院必須參考<strong>「社工人員訪視報告」</strong>，選出真正對孩子最好的人，不再讓順位決定一切。</p>
     </div>
 
     <div id="sec-4" class="content-section">
-        <h2>三、 保險與規劃啟示</h2>
+        <h2>三、 保險與傳承三啟示</h2>
         <h3>1. 指定監護人的必要性</h3>
-        <p>高資產客戶除了留錢，更要預先以遺囑指定監護人，避免親戚爭產。</p>
+        <p>建議在做資產規劃時，同步完成遺囑，確保控制權在信任的人手中。</p>
         <h3>2. 保險金信託的重要性</h3>
-        <p>確保理賠金不被揮霍，真正用於孩子成長。</p>
+        <p>錢跟人要分開。監護人管人，信託管錢，防止保險金被挪用。</p>
         <h3>3. 單親或失能風險</h3>
-        <p>規劃長照或失能險時，應同步考量監護責任的轉移。</p>
+        <p>不僅是死亡，父母其中一方長期失能也可能觸發監護議題，規劃失能險時務必留意。</p>
     </div>
 
     <div id="sec-5" class="content-section">
-        <h2>四 : 法律小提醒</h2>
+        <h2>四、 法律小提醒</h2>
         <div class="quote-box">
             「法院選定監護人時，應依未成年子女之<strong>最佳利益</strong>，審酌一切情狀……並應參考社工人員之訪視報告。」<br>
             <small>——《民法》第 1094 條第 4 項</small>
         </div>
-        <p>這意味著法律不再只是冰冷的順位，而是「誰對孩子最好」。</p>
-        <hr>
-        <p style="text-align:center;"><strong>王經理專業結語：</strong><br>做好遺囑指定，能省去無數家族紛爭。</p>
+        <p><strong>王經理總結：</strong><br>法律是冰冷的，但安排是溫暖的。運用遺囑指定，是送給孩子最後的護身符。</p>
     </div>
 
     <div class="btn-container">
-        <button id="prevBtn" class="btn-prev" onclick="changeStep(-1)" style="visibility: hidden;">回上一步</button>
-        <button id="nextBtn" class="btn-next" onclick="changeStep(1)">點擊了解更多</button>
+        <button id="prevBtn" class="action-btn btn-prev" onclick="changeStep(-1)" style="visibility: hidden;">上一步</button>
+        <button id="nextBtn" class="action-btn btn-next" onclick="changeStep(1)">了解下一步</button>
     </div>
 </div>
 
@@ -153,30 +178,26 @@
     let currentStep = 1;
     const totalSteps = 5;
 
-    function changeStep(n) {
-        // 隱藏當前段落
+    function goToStep(n) {
         document.getElementById(`sec-${currentStep}`).classList.remove('active');
-        
-        // 更新步數
-        currentStep += n;
-        
-        // 顯示新段落
+        document.getElementById(`nav${currentStep}`).classList.remove('active');
+        currentStep = n;
         document.getElementById(`sec-${currentStep}`).classList.add('active');
+        document.getElementById(`nav${currentStep}`).classList.add('active');
+        updateButtons();
+    }
 
-        // 按鈕顯示邏輯
+    function changeStep(n) {
+        if (currentStep + n > totalSteps) {
+            location.reload(); // 重新開始
+            return;
+        }
+        goToStep(currentStep + n);
+    }
+
+    function updateButtons() {
         document.getElementById('prevBtn').style.visibility = (currentStep === 1) ? 'hidden' : 'visible';
-        
-        if (currentStep === totalSteps) {
-            document.getElementById('nextBtn').innerText = '重新閱讀';
-        } else {
-            document.getElementById('nextBtn').innerText = '下一個重點';
-        }
-
-        // 若超過最後一頁則重頭開始
-        if (currentStep > totalSteps) {
-            currentStep = 1;
-            location.reload(); 
-        }
+        document.getElementById('nextBtn').innerText = (currentStep === totalSteps) ? '重新開始' : '下一個重點';
     }
 </script>
 
