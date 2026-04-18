@@ -3,134 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>民法 1094 條：未成年監護人決策導航</title>
+    <title>民法 1094 條：未成年監護風險導航</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #c0392b;
-            --bg-color: #f4f7f6;
+            --primary: #2c3e50;
+            --accent: #d35400;
+            --success: #27ae60;
+            --light: #f9f9f9;
         }
         body {
-            font-family: "Microsoft JhengHei", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-color);
-            line-height: 1.6;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: #ececec;
             display: flex;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
-        .container {
-            max-width: 600px;
+        .card {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 700px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 40px;
         }
-        h2 {
+        .header {
             text-align: center;
-            color: var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
             padding-bottom: 10px;
         }
-        .question {
-            font-size: 1.2rem;
-            margin: 20px 0;
-            font-weight: bold;
-            text-align: center;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
+        .header h1 { color: var(--primary); font-size: 1.5rem; margin: 0; }
+        .header p { color: #7f8c8d; font-size: 0.9rem; }
+        
+        .step { display: none; text-align: center; }
+        .step.active { display: block; animation: fadeIn 0.5s; }
+        
+        .question { font-size: 1.3rem; font-weight: bold; margin-bottom: 25px; color: var(--primary); }
+        
+        .options { display: flex; flex-direction: column; gap: 15px; }
         button {
-            padding: 12px 25px;
-            font-size: 1rem;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 50px;
             cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: var(--primary-color);
-            color: white;
-            transition: 0.3s;
+            transition: all 0.3s;
         }
-        button:hover {
-            background-color: #34495e;
-            transform: translateY(-2px);
-        }
-        #result {
-            margin-top: 30px;
-            padding: 20px;
-            border-left: 5px solid var(--accent-color);
-            background: #fff5f5;
-            display: none;
-        }
-        .highlight {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        .footer-note {
-            font-size: 0.85rem;
+        button:hover { background: var(--primary); color: white; }
+        
+        .result-box {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: left;
             margin-top: 20px;
-            color: #7f8c8d;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
         }
+        .highlight { color: var(--accent); font-weight: bold; }
+        .expert-tip {
+            margin-top: 25px;
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            font-size: 0.95rem;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>民法第 1094 條 互動導航</h2>
-    <p>當父母均不能行使監護權時，孩子由誰照顧？</p>
-    
-    <div id="step1">
-        <div class="question">Q1：父母生前是否留有「指定監護人」的遺囑？</div>
-        <div class="btn-group">
-            <button onclick="showResult('will')">是，有遺囑</button>
-            <button onclick="showResult('no-will')">否，未留遺囑</button>
+<div class="card">
+    <div class="header">
+        <h1>民法第 1094 條：監護權大解密</h1>
+        <p>當愛無法親自陪伴，法律如何安排孩子的未來？</p>
+    </div>
+
+    <div id="step1" class="step active">
+        <div class="question">Q1: 若不幸發生意外，父母均不存時...</div>
+        <div class="options">
+            <button onclick="nextStep(2)">開始評估風險</button>
         </div>
     </div>
 
-    <div id="result">
-        <div id="result-text"></div>
-        <div class="footer-note">
-            <strong>王經理專業提醒：</strong><br>
-            法律順位只是基礎，為了確保保險理賠金不被挪用，強烈建議搭配「保險金信託」與「遺囑公證」。
+    <div id="step2" class="step">
+        <div class="question">您是否預先在「遺囑」中指定監護人？</div>
+        <div class="options">
+            <button onclick="showFinal('will')">是有遺囑指定</button>
+            <button onclick="showFinal('court')">否，未留遺囑</button>
         </div>
-        <button style="margin-top:20px; background:#95a5a6;" onclick="reset()">重新檢測</button>
+    </div>
+
+    <div id="final" class="step">
+        <div id="result-content" class="result-box"></div>
+        
+        <div class="expert-tip">
+            <strong>💡 王經理專業觀點：</strong><br>
+            法律順位僅是底線，並非最優解。強烈建議搭配「保險金信託」，確保理賠金真正用於孩子教育與生活，而非淪為親屬爭產的誘因。
+        </div>
+        
+        <button style="margin-top:25px; font-size:0.9rem;" onclick="location.reload()">重新模擬</button>
     </div>
 </div>
 
 <script>
-    function showResult(type) {
-        document.getElementById('step1').style.display = 'none';
-        const resultDiv = document.getElementById('result');
-        const textDiv = document.getElementById('result-text');
-        resultDiv.style.display = 'block';
-
-        if (type === 'will') {
-            textDiv.innerHTML = `
-                <h3><span class="highlight">第一順位：遺囑指定</span></h3>
-                <p>根據民法 1094 條第 1 項，父母以<strong>遺囑指定</strong>之人選具有法律最高優先權。</p>
-                <p>這能最有效避免家族紛爭，確保孩子由您信任的人照顧。</p>
-            `;
-        } else {
-            textDiv.innerHTML = `
-                <h3><span class="highlight">進入法院選定程序</span></h3>
-                <p>若無遺囑，法院將依<strong>「子女最佳利益」</strong>選定監護人，參考順序如下：</p>
-                <ul>
-                    <li>與未成年人同居之祖父母</li>
-                    <li>與未成年人同居之兄姊</li>
-                    <li>不具同居關係之祖父母</li>
-                </ul>
-                <p><small>*注意：法院會參考社工訪視報告，並非絕對依順位自動產生。</small></p>
-            `;
-        }
+    function nextStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + n).classList.add('active');
     }
 
-    function reset() {
-        document.getElementById('step1').style.display = 'block';
-        document.getElementById('result').style.display = 'none';
+    function showFinal(type) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        const final = document.getElementById('final');
+        const content = document.getElementById('result-content');
+        final.classList.add('active');
+
+        if (type === 'will') {
+            content.innerHTML = `
+                <h3 style="color:var(--success);">✅ 第一順位：遺囑指定人</h3>
+                <p>根據民法 1094 條第 1 項，您的指定具有<span class="highlight">最高法律效力</span>。</p>
+                <p>這能確保孩子交給您最信任的人，且省去法院調查的冗長程序。</p>
+            `;
+        } else {
+            content.innerHTML = `
+                <h3 style="color:var(--accent);">⚠️ 進入法院選定程序</h3>
+                <p>若無遺囑，法院將依「子女最佳利益」從以下親屬中選定：</p>
+                <ul style="font-size:0.95rem;">
+                    <li>1. 同居之祖父母</li>
+                    <li>2. 與未成年人同居之兄姊</li>
+                    <li>3. 不具同居關係之祖父母</li>
+                </ul>
+                <p><strong>注意：</strong> 2009年修法後，法院會參考<span class="highlight">社工訪視報告</span>，不再是自動順位遞補。</p>
+            `;
+        }
     }
 </script>
 
